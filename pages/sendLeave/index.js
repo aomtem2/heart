@@ -8,6 +8,7 @@ import { Form, Input, DatePicker, Radio } from 'formik-antd'
 import { Layout, Button, Row, Col, Card, Skeleton } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import moment from 'moment';
 import serViceUrl from '../function/serViceUrl'
@@ -19,6 +20,8 @@ const { Content } = Layout;
 export default function index() {
 
     const phone = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const router = useRouter()
+    const token = Cookies.get('token')
     const [user, setUser] = useState({});
     const [loading, setLoading] = useState(true);
     const [optionStart, setOptionStart] = useState();
@@ -32,12 +35,17 @@ export default function index() {
 
 
     useEffect(async () => {
-        const res = await callService('POST', `${serViceUrl()}allUsers/getUserProfile`,
-            { token: Cookies.get('cookie') }
-        )
-        console.log(res)
-        setUser(res.data.message)
-        setLoading(false)
+        if (token) {
+            const res = await callService('POST', `${serViceUrl()}allUsers/getUserProfile`,
+                { token: token }
+            )
+            console.log(res)
+            setUser(res.data.message)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
     }, [])
 
     const setTotal = () => {

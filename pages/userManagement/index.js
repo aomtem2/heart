@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import callService from '../function/axiosCall'
 import Cookies from 'js-cookie'
 import { useFormik, Formik } from 'formik';
+import { useRouter } from 'next/router'
 import * as Yup from 'yup';
 import { Form, Input, InputNumber, Checkbox, DatePicker, Select } from 'formik-antd'
 import { Layout, Button, Row, Col, message, Modal, Menu, Skeleton } from 'antd';
@@ -26,7 +27,8 @@ export default function index() {
     const Swal = require('sweetalert2')
 
     const phone = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
-
+    const router = useRouter()
+    const token = Cookies.get('token')
     const [isModalAddUserVisible, setisModalAddUserVisible] = useState(false);
     const [isModalEditUserVisible, setisModalEditUserVisible] = useState(false);
     const [listDepartment, setDepartment] = useState([]);
@@ -102,16 +104,18 @@ export default function index() {
     };
 
     useEffect(async () => {
-        const res = await callService('GET', `${serViceUrl()}admin/lookup`)
-        // console.log(res.data)
-        setDepartment(res.data.Department)
-        setPosition(res.data.Position)
-        const resData = await callService('GET', `${serViceUrl()}admin/getAllUserProfile`)
-
-        console.log(resData.data.message)
-        setList(resData.data.message)
-        setLoading(false)
-
+        if (token) {
+            const res = await callService('GET', `${serViceUrl()}admin/lookup`)
+            setDepartment(res.data.Department)
+            setPosition(res.data.Position)
+            const resData = await callService('GET', `${serViceUrl()}admin/getAllUserProfile`)
+            console.log(resData.data.message)
+            setList(resData.data.message)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
     }, [statusReload])
 
     const showModalAddUser = () => {
@@ -151,7 +155,7 @@ export default function index() {
         })
         if (result.isConfirmed) {
             const res = await callService('POST', `${serViceUrl()}admin/deleteUser`, {
-                token: Cookies.get('cookie'),
+                token: token,
                 userId: user.userId.toString()
             })
             console.log(res)
@@ -277,7 +281,7 @@ export default function index() {
                     initialValues={initialValueAddUser}
                     validationSchema={addUserSchema}
                     onSubmit={async (values, { resetForm }) => {
-                        // console.log(Cookies.get('cookie'));
+                        // console.log(token);
                         // values.startingDate = values.startingDate.toString()
                         const res = await callService('POST', `${serViceUrl()}admin/createUser`, {
                             firstName: values.firstName,
@@ -289,7 +293,7 @@ export default function index() {
                             position: values.position,
                             department: values.department,
                             startingDate: values.startingDate,
-                            token: Cookies.get('cookie')
+                            token: token
                         }, {})
                         if (res.data.message == "Add User Success") {
                             await Swal.fire({
@@ -492,7 +496,7 @@ export default function index() {
                                 phone: values.phone,
                                 position: values.position,
                                 department: values.department,
-                                // token: Cookies.get('cookie')
+                                // token: token
                             }, {})
                             if (res.data.message == "Edit profile Success") {
                                 Swal.fire({

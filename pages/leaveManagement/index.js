@@ -20,6 +20,8 @@ import 'react-data-table-component-extensions/dist/index.css';
 const { Content } = Layout;
 export default function index() {
 
+    const router = useRouter()
+    const token = Cookies.get('token')
     const [collapsed, toggleCollapsed] = useState(false);
     const [datatable, setDatatable] = useState();
     const [loading, setLoading] = useState(true);
@@ -125,7 +127,7 @@ export default function index() {
                     <a onClick={async () => {
                         console.log(record)
                         if (Cookies.get('role') == 'HRadministrator') {
-                            const resData = await callService('POST', `${serViceUrl()}hr/getOneApprovedLeave`, { token: Cookies.get('cookie'), leaveId: record.leaveId.toString() })
+                            const resData = await callService('POST', `${serViceUrl()}hr/getOneApprovedLeave`, { token: token, leaveId: record.leaveId.toString() })
                             console.log(resData.data.message)
                             setLeaveDetail({
                                 leaveId: resData.data.message.leaveId,
@@ -151,7 +153,7 @@ export default function index() {
                             showModalHr()
                         }
                         else {
-                            const resData = await callService('POST', `${serViceUrl()}supervisor/getOneStaffLeave`, { token: Cookies.get('cookie'), leaveId: record.leaveId.toString() })
+                            const resData = await callService('POST', `${serViceUrl()}supervisor/getOneStaffLeave`, { token: token, leaveId: record.leaveId.toString() })
                             console.log(resData.data.message)
                             setLeaveDetail({
                                 leaveId: resData.data.message.leaveId,
@@ -219,18 +221,23 @@ export default function index() {
     };
 
     useEffect(async () => {
-        let url = Cookies.get('role') != 'Supervisor' ? 'hr/getApprovedLeave' : 'supervisor/getStaffLeave'
-        console.log(url)
-        const resData = await callService('POST', `${serViceUrl()}${url}`, { token: Cookies.get('cookie') })
-        let i = 0;
-        console.log(resData.data)
-        resData.data.forEach(element => {
-            var date = new Date(resData.data[i].date);
-            resData.data[i].date = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
-            i++
-        });
-        setDatatable(resData.data)
-        setLoading(false)
+        if (token) {
+            let url = Cookies.get('role') != 'Supervisor' ? 'hr/getApprovedLeave' : 'supervisor/getStaffLeave'
+            console.log(url)
+            const resData = await callService('POST', `${serViceUrl()}${url}`, { token: token })
+            let i = 0;
+            console.log(resData.data)
+            resData.data.forEach(element => {
+                var date = new Date(resData.data[i].date);
+                resData.data[i].date = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
+                i++
+            });
+            setDatatable(resData.data)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
     }, [statusReload])
 
     return (
@@ -265,7 +272,7 @@ export default function index() {
                                 status: values.status,
                                 reasonSuper: values.reasonSuper,
                                 pin: values.pin,
-                                token: Cookies.get('cookie')
+                                token: token
                             })
                         console.log(resData.data.message);
                         if (resData.data.message == 'Approve Success') {
@@ -605,7 +612,7 @@ export default function index() {
                                 comment: values.comment,
                                 statusHR: "ลงบันทึกเรียบร้อย",
                                 pin: values.pin,
-                                token: Cookies.get('cookie')
+                                token: token
                             })
                         console.log(resData.data.message);
                         if (resData.data.message == 'Record Success') {

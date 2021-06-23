@@ -16,11 +16,20 @@ const { Content } = Layout;
 export default function index() {
 
     const router = useRouter()
-
+    const token = Cookies.get('token')
     const initialValueSetPin = {
         pin: '',
         confirm: ''
     }
+
+    useEffect(async () => {
+        if (token) {
+        }
+        else {
+            router.push('/login')
+        }
+
+    }, [])
 
     const setPinSchema = Yup.object().shape({
         pin: Yup.string().length(6, '* Must be exactly 6 digits').required('* Pin is required'),
@@ -48,7 +57,7 @@ export default function index() {
                             // console.log(values);
                             const res = await callService('POST', `${serViceUrl()}allUsers/setPin`, {
                                 pin: values.pin,
-                                token: Cookies.get('cookie'),
+                                token: token,
                             })
 
                             Cookies.set('pinStatus', "True", { expires: 7, path: '' });

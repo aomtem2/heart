@@ -3,26 +3,11 @@ import Navbar from './Navbar';
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import Sidebar from './Sidebar';
-import Cookies from 'js-cookie'
 
 const LayoutA = ({ children }) => {
     const router = useRouter()
-    const cookie = Cookies.get('cookie')
-    Cookies.set('cookie', '1', { expires: 7 });
-    Cookies.set('pinStatus', '1', { expires: 7 });
-    Cookies.set('role', '1', { expires: 7 });
     const noSide = ["/login", "/setPin"]
     const list = ["/home", "/leaveManagement", "/userManagement", "/addOldRecord", "/activity", "/sendLeave", "/home", "/login", "/setPin", "/sendLeave", "/activity", "/leaveManagement", "/profile"]
-
-    useEffect(() => {
-        if (cookie) {
-
-        }
-        else {
-            router.push('/login')
-        }
-
-    }, [])
 
     return (
         <Layout className="fontConcert">

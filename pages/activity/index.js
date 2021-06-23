@@ -4,6 +4,7 @@ import callService from '../function/axiosCall'
 import Cookies, { get } from 'js-cookie'
 import { Layout, Button, Row, Col, message, Modal, Menu, Card, Skeleton } from 'antd';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
 import Iconify from '@iconify/iconify';
 import serViceUrl from '../function/serViceUrl'
 import Swal from 'sweetalert2/dist/sweetalert2.js'
@@ -11,11 +12,13 @@ import DataTable from 'react-data-table-component';
 import DataTableExtensions from 'react-data-table-component-extensions';
 import 'react-data-table-component-extensions/dist/index.css';
 
+
 const { Content } = Layout;
 
 export default function index() {
 
-
+    const router = useRouter()
+    const token = Cookies.get('token')
     const [datatable, setDatatable] = useState();
     const [loading, setLoading] = useState(true);
 
@@ -124,17 +127,21 @@ export default function index() {
     };
 
     useEffect(async () => {
-        const resData = Cookies.get('role') != 'Administrator' ? await callService('POST', `${serViceUrl()}allUsers/getLog`, { token: Cookies.get('cookie'), }) : await callService('POST', `${serViceUrl()}admin/getAllLog`, { token: Cookies.get('cookie'), })
-        console.log(resData.data.message)
-        let i = 0;
-        resData.data.message.forEach(element => {
-            var date = new Date(resData.data.message[i].date);
-            resData.data.message[i].date = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
-            i++
-        });
-        setDatatable(resData.data.message)
-        setLoading(false)
-
+        if (token) {
+            const resData = Cookies.get('role') != 'Administrator' ? await callService('POST', `${serViceUrl()}allUsers/getLog`, { token: token, }) : await callService('POST', `${serViceUrl()}admin/getAllLog`, { token: token, })
+            console.log(resData.data.message)
+            let i = 0;
+            resData.data.message.forEach(element => {
+                var date = new Date(resData.data.message[i].date);
+                resData.data.message[i].date = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
+                i++
+            });
+            setDatatable(resData.data.message)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
     }, [])
 
     return (

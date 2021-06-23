@@ -17,6 +17,8 @@ const { Content } = Layout;
 
 export default function index() {
 
+    const router = useRouter()
+    const token = Cookies.get('token')
     const [loading, setLoading] = useState(true);
     const [isEditPasswordModalVisible, setIsModalEditPasswordVisible] = useState(false);
     const [isEditPinModalVisible, setIsModalEditPinVisible] = useState(false);
@@ -26,10 +28,15 @@ export default function index() {
     const [onEdit, setOnEdit] = useState(false);
 
     useEffect(async () => {
-        const res = await callService('POST', `${serViceUrl()}allUsers/getProfile`, { token: Cookies.get('cookie') })
-        console.log(res.data.message)
-        setUserData(res.data.message)
-        setLoading(false)
+        if (token) {
+            const res = await callService('POST', `${serViceUrl()}allUsers/getProfile`, { token: token })
+            console.log(res.data.message)
+            setUserData(res.data.message)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
     }, [statusReload])
 
     const initialValueUserDetail = {
@@ -121,7 +128,7 @@ export default function index() {
                                 firstName: values.firstName,
                                 lastName: values.lastName,
                                 phone: values.phone,
-                                token: Cookies.get('cookie')
+                                token: token
                             })
                         console.log(resData.data.message);
                         if (resData.data.message == 'Edit profile success') {
@@ -345,7 +352,7 @@ export default function index() {
                             {
                                 oldPassword: values.oldPassword,
                                 newPassword: values.newPassword,
-                                token: Cookies.get('cookie')
+                                token: token
                             }
                         )
                         console.log(res)
@@ -452,7 +459,7 @@ export default function index() {
                             {
                                 oldPin: values.oldPin,
                                 newPin: values.newPin,
-                                token: Cookies.get('cookie')
+                                token: token
                             }
                         )
                         console.log(res)

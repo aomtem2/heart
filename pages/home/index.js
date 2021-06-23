@@ -21,10 +21,10 @@ import AuthContext from '../component/authContext'
 const { Content } = Layout;
 const { Step } = Steps;
 
-export default function index({ data }) {
+export default function index() {
 
     const router = useRouter()
-
+    const token = Cookies.get('token')
     const { user } = useContext(AuthContext)
     const [datatable, setDatatable] = useState([{}]);
     const [leaveDetail, setLeaveDetail] = useState([{}]);
@@ -113,7 +113,7 @@ export default function index({ data }) {
                 return (
                     <a onClick={async () => {
                         console.log(record)
-                        const resData = await callService('POST', `${serViceUrl()}allUsers/getOneLeave`, { token: Cookies.get('cookie'), leaveId: record.leaveId.toString() })
+                        const resData = await callService('POST', `${serViceUrl()}allUsers/getOneLeave`, { token: token, leaveId: record.leaveId.toString() })
                         console.log(resData.data)
                         setLeaveDetail({
                             leaveId: resData.data.leaveId,
@@ -211,7 +211,7 @@ export default function index({ data }) {
                 return (
                     <a onClick={async () => {
                         console.log(record)
-                        const resData = await callService('POST', `${serViceUrl()}allUsers/getOneLeave`, { token: Cookies.get('cookie'), leaveId: record.leaveId.toString() })
+                        const resData = await callService('POST', `${serViceUrl()}allUsers/getOneLeave`, { token: token, leaveId: record.leaveId.toString() })
                         console.log(resData)
                         setLeaveDetail({
                             leaveId: resData.data.leaveId,
@@ -273,16 +273,21 @@ export default function index({ data }) {
     };
 
     useEffect(async () => {
-        const resData = Cookies.get('role') != 'Administrator' ? await callService('POST', `${serViceUrl()}allUsers/getUserLeave`, { token: Cookies.get('cookie') }) : await callService('GET', `${serViceUrl()}admin/getAllUserLeave`)
-        console.log(resData.data.message)
-        let i = 0;
-        resData.data.message.forEach(element => {
-            var date = new Date(resData.data.message[i].date);
-            resData.data.message[i].date = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
-            i++
-        });
-        setDatatable(resData.data.message)
-        setLoading(false)
+        if (token) {
+            const resData = Cookies.get('role') != 'Administrator' ? await callService('POST', `${serViceUrl()}allUsers/getUserLeave`, { token: token }) : await callService('GET', `${serViceUrl()}admin/getAllUserLeave`)
+            console.log(resData.data.message)
+            let i = 0;
+            resData.data.message.forEach(element => {
+                var date = new Date(resData.data.message[i].date);
+                resData.data.message[i].date = date.getFullYear() + '-' + (date.getMonth() + 1).toString().padStart(2, '0') + '-' + date.getDate().toString().padStart(2, '0') + ' ' + date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0')
+                i++
+            });
+            setDatatable(resData.data.message)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
 
     }, [])
 

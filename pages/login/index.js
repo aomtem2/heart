@@ -52,7 +52,7 @@ export default function index() {
                             console.log(res)
                             if (res.data.message == "Login Success") {
                                 message.success('Login success!!');
-                                Cookies.set('cookie', res.data.token, { expires: 7 });
+                                Cookies.set('token', res.data.token, { expires: 7 });
                                 Cookies.set('pinStatus', res.data.pinStatus, { expires: 7 });
                                 Cookies.set('role', res.data.role, { expires: 7 });
                                 login(Cookies.get('cookie'))

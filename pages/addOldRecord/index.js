@@ -3,6 +3,7 @@ import 'antd/dist/antd.css';
 import callService from '../function/axiosCall'
 import Cookies from 'js-cookie'
 import { useFormik, Formik } from 'formik';
+import { useRouter } from 'next/router'
 import * as Yup from 'yup';
 import { Form, Input, InputNumber, Checkbox, DatePicker, Select, Radio } from 'formik-antd'
 import { Layout, Button, Row, Col, message, Modal, Menu, Skeleton } from 'antd';
@@ -15,7 +16,8 @@ import serViceUrl from '../function/serViceUrl'
 const { Content } = Layout;
 
 export default function index() {
-    const phone = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/
+    const router = useRouter()
+    const token = Cookies.get('token')
     const [user, setUser] = useState([{}]);
     const [loading, setLoading] = useState(true);
     const [optionStart, setOptionStart] = useState();
@@ -30,12 +32,15 @@ export default function index() {
 
 
     useEffect(async () => {
-        const res = await callService('GET', `${serViceUrl()}hr/getAllUserProfile`)
-        // res
-
-        console.log(res.data.message)
-        setList(res.data.message)
-        setLoading(false)
+        if (token) {
+            const res = await callService('GET', `${serViceUrl()}hr/getAllUserProfile`)
+            console.log(res.data.message)
+            setList(res.data.message)
+            setLoading(false)
+        }
+        else {
+            router.push('/login')
+        }
     }, [])
 
     const handleChange = (key, e) => {
@@ -242,7 +247,7 @@ export default function index() {
                             comment: values.comment,
                             total: values.total.toString(),
                             pin: values.pin,
-                            token: Cookies.get('cookie')
+                            token: token
                         }, {})
                         console.log(res);
                         if (res.data.message == "Submit success") {

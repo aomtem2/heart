@@ -26,7 +26,7 @@ const Sidebar = () => {
         })
         if (result.isConfirmed) {
             const res = await callService('POST', `${serViceUrl()}allUsers/logout`, { 'token': Cookies.get('cookie') }, {})
-            Cookies.remove('cookie')
+            Cookies.remove('token')
             Cookies.remove('role')
             Cookies.remove('pinStatus')
             console.log(res)
