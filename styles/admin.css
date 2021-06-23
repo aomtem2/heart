@@ -1,0 +1,33 @@
+.formCustom {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.inputBox {
+  max-width: 270px;
+}
+
+.longInputBox {
+  max-width: 100%;
+}
+
+.longInputBoxA {
+  max-width: 90%;
+}
+
+.fontPromt {
+  font-family: Prompt, sans-serif;
+}
+
+.submitBtn {
+  background: rgba(0, 161, 155, 0.8) !important;
+  border-color: rgba(0, 161, 155, 0.8) !important;
+}
+
+.row0 {
+  row-gap: 0px !important;
+}
+
+.editIcon{
+  width: 100%;
+}

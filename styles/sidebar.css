@@ -1,0 +1,137 @@
+/* .trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.trigger:hover {
+  color: white;
+}
+.siderbarFont {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 16px;
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.ant-menu {
+  background: #fff !important;
+}
+
+.sidebarBg {
+  background: rgba(0, 161, 155, 0.2);
+} */
+
+body {
+  background: rgba(34, 177, 168, 0.1) !important;
+}
+
+.sidebarLayout {
+  background-color: rgba(0, 161, 155, 0.8) !important;
+  min-height: 100vh;
+  text-align: center;
+}
+
+.logo {
+  height: 114px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.menuSidebar {
+  background-color: rgba(0, 161, 155, 0) !important;
+}
+
+.subMenuSidebar {
+  margin: 0px !important;
+  height: 50px !important;
+  font-size: 20px;
+  line-height: 16px;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  color: white;
+}
+
+.ant-menu {
+  border: 0px !important;
+}
+
+.ant-menu-item-selected {
+  background-color: white !important;
+  color: #06c1ba !important;
+}
+
+.ant-menu-item-active {
+  background-color: white !important;
+  color: #06c1ba !important;
+}
+
+.borT {
+  width: 70%;
+  height: 15px;
+  margin: auto;
+  margin-bottom: 20px;
+  border-bottom: 4px solid #ffffff;
+}
+
+.ant-menu-item-icon {
+  font-size: 30px !important;
+  vertical-align: -0.35em !important;
+}
+
+.textMenu {
+  vertical-align: -0.2em !important;
+}
+
+.svgIcon {
+  max-width: 30px;
+  max-height: 30px;
+  min-width: 20px;
+  min-height: 20px;
+  vertical-align: -0.52em;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.ant-layout-header {
+  background: rgba(34, 177, 168, 0.4) !important;
+  max-height: 50px !important;
+  height: 50px !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.sectionLayout {
+  margin: 55px 30px !important;
+  padding: 60px !important;
+  /* min-height: 280 !important; */
+  background-color: #ffffff !important;
+  height: 100% !important;
+}
+
+.ant-layout {
+  background: rgba(34, 177, 168, 0.02) !important;
+}
+
+.collapseIcon {
+  height: 25px !important;
+  width: 25px !important;
+  vertical-align: -0.3em !important;
+}
+
+.sidebarFont {
+  font-size:x-large;
+  color: #ffffff;
+}

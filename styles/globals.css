@@ -1,0 +1,15 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Concert One", sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+user* {
+  box-sizing: border-box;
+}

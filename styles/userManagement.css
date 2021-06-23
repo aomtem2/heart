@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Prompt&display=swap");
+body {
+  height: 100vh;
+}
+
+.mbgColor {
+  height: 89vh;
+}
+
+.center {
+  align-items: center;
+  text-align: center;
+}
+
+.modalBG {
+  background: rgba(0, 161, 155, 0.2);
+}
+
+.ant-modal-header {
+  background: rgba(0, 161, 155, 0.2);
+}
+
+.btnAdd {
+  max-width: 150px;
+  float: right;
+}
+
+.tableStyle {
+  font-size: 20px !important;
+  font-family: Prompt, sans-serif;
+  /* text-align: center; */
+}
+
+.ant-modal-header {
+  background: rgba(0, 161, 155, 0.2) !important;
+  border: 0px !important;
+  text-align: center;
+}
+
+.iconAdd {
+  vertical-align: -0.2em;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+}
